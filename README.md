@@ -1,5 +1,12 @@
 # ot1
 # Steepest Code
+# MATLAB Optimization Programs
+
+---
+
+## 1. Steepest Descent Method
+
+```matlab
 clc;  clear;
 
 f = @(x) x(1)^2 - x(1)*x(2) + x(2)^2
