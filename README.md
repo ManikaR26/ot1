@@ -6,27 +6,41 @@
 
 ## 1. Steepest Descent Method
 
-```matlab
-clc;  clear;
+n = 3; % no. of rows
+A = [4 2 1;
+    1 5 1;
+    1 1 8];
+b = [14; 10; 20];
+x0 = [1,1,1];
+x1 = zeros(n,1);
+k = 0;
+N = 1000;
+tol = 10^-4;
 
-f = @(x) x(1)^2 - x(1)*x(2) + x(2)^2
+while k<N
+    for i=1:n
+        sum=0;
+        for j=1:i-1
+            sum = sum + A(i,j)*x1(j);
+        end
 
-grad = @(x) [ 2*x(1) - x(2); -x(1) + 2*x(2)]
-
-H = [2 -1  ;-1  2 ];   % constant Hessian
-x = [1;0.5];
-tol = 0.05;
-maxiter = 10;
-fprintf('Iter\t   x1\t\t   x2\t\t   f(x)\n');
-for k = 1:maxiter
-      g = grad(x);
-    if norm(g) < tol
-        break;
+        for j=i+1:n
+            sum = sum + A(i,j)*x0(j);
+        end
+    x1(i) = (b(i) - sum)/A(i,i);
     end
-    S = -g;
-    lambda = (S'*S) / (S'*H*S);
-    x = x + lambda * S;
-    fprintf('%d\t %f\t %f\t %f\n', k, x(1), x(2), f(x));
+    if norm(x0-x1, inf) < tol
+        break
+    else 
+        x0 = x1;
+        k = k + 1;
+    end
 end
+x1
+k
+
+
+
+
 fprintf('\nOptimal solution: x = (%f, %f)\n', x(1), x(2));
 fprintf('Minimum value: f(x) = %f\n', f(x));
